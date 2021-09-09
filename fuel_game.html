@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS game</title>
+</head>
+<body>
+    <h1>Hello World!</h1>
+    <h2>This is automated game</h2>
+    <p>If the car exactly stop at any petrol pumps "30" will be added to the fuel.<br/>
+        Initial fuel level is 150.<br/>
+        If your fuel gets over before you reach the finishing point, you're out of the game. <br/>
+    You can restart the game by clicking the "start" button again.    
+    </p>
+<button onclick="myFunction()">Start</button>
+<div id="demo">
+</div>
+<div id="demo1">
+
+</div>
+
+<p id="moves">
+</p>
+
+<p id="over">
+</p>
+    <script>
+        function myFunction() {
+    let car_fuel = 150;
+    let starting_point = 0;
+    let finishing_point = 100;
+    let n = 0;
+    let m = 6;
+    let count = 0;
+    let minus = 0;
+    let temp = "";
+    // let point = 20
+  
+    let petrol_pumps = [];
+    let moving_points = [];
+  
+    for (let i = 0; i < 6; i++) {
+      petrol_pumps.push(random_number(n, finishing_point));
+      n = petrol_pumps[i];
+  
+      if (i > 0 && petrol_pumps[i] == petrol_pumps[i - 1]) {
+        petrol_pumps[i] += 1;
+      }
+  
+      //  if (i == 5) {
+      //    point =100;
+  
+      //  }
+      //  else {
+      //    point = point + 15
+      //  }
+    }
+  
+    document.getElementById("demo").innerHTML = "Game Started";
+  
+    document.getElementById("demo1").innerHTML =
+      "Petrol pumps generated at " + petrol_pumps;
+    document.getElementById("moves").innerHTML = "";
+  
+    while (starting_point < finishing_point) {
+      moving_points.push(random_number(starting_point, m));
+      if (count > 0 && moving_points[count] == moving_points[count - 1]) {
+        moving_points[count] += 1;
+      }
+      minus = (moving_points[count] - starting_point) * 2;
+      starting_point = moving_points[count];
+      car_fuel = car_fuel - minus;
+      petrol_pumps.map(function (num) {
+        while (moving_points[count] == num) {
+          car_fuel = car_fuel + 30;
+          break;
+        }
+      });
+  
+      temp = document.getElementById("moves").innerHTML;
+  
+      if (car_fuel <= 0) {
+        car_fuel = 0;
+        // console.log('game over')
+        document.getElementById("moves").innerHTML =
+          temp +
+          "<br> Move " +
+          (count + 1) +
+          " - car at " +
+          moving_points[count] +
+          ", Petrol Remaining " +
+          car_fuel;
+        document.getElementById("over").innerHTML = "Game Over";
+        break;
+      }
+  
+      document.getElementById("moves").innerHTML =
+        temp +
+        "<br> Move " +
+        (count + 1) +
+        " - car at " +
+        moving_points[count] +
+        ", Petrol Remaining " +
+        car_fuel;
+  
+      // console.log( count+1, "- car at ", moving_points[count], " , Petrol Remaining" , car_fuel)
+  
+      m = starting_point + 6;
+      count++;
+      if (starting_point >= finishing_point) {
+        document.getElementById("over").innerHTML = "You Win";
+        // console.log("you win")
+      }
+    }
+  
+    // console.log(petrol_pumps)
+    // console.log(moving_points)
+    // console.log(car_fuel)
+  
+    function random_number(minimum, maximum) {
+      return Math.round(Math.random() * (maximum - minimum) + minimum);
+    }
+  
+    // document.write("<h1>",petrol_pumps,"</h1>")
+  }
+  
+    </script>
+</body>
+</html>
